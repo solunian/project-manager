@@ -1,4 +1,6 @@
-# project-manager
+# tart
+
+A command-line project manager.
 
 I'm kinda just learning rust with this because apparently it's a good language. 😁
 

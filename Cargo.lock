@@ -3,5 +3,5 @@
 version = 3
 
 [[package]]
-name = "project-manager"
+name = "tart"
 version = "0.0.1"
