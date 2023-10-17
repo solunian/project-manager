@@ -6,44 +6,61 @@ const VERSION: &str = "0.0.1";
 const DEV_MODE: bool = true;
 
 fn main() {
-    let args: Vec<String> = env::args().collect();
+    // vector includes executable as first, then args
+    let exec_args: Vec<String> = env::args().collect();
 
 
     // DEV STUFF
     if DEV_MODE {
-        println!("\nCommand Line Args");
-        for i in args.iter() {
+        println!("\nCommand Line `exec_args` (each value surrounded by < >)");
+        for i in exec_args.iter() {
             print!("<{}> ", i);
         }
         println!("\n\n============================\n");
     }
     // ===========================
 
-    if args.len() <= 1 {
+
+    let args: &[String] = &exec_args[1..];
+    
+    if args.len() == 0 {
+        println!("tart - a project manager");
         return;
     }
+    
+    let command: &str = &args[0];
 
-    let command: &str = &args[1];
-
-    match command {
-        "-v" | "--version" => {
-            println!("project-manager v{}", VERSION);
-        },
+    let message = match command {
         "init" => {
-            println!("init");
-            handle::init_dot_dir();
+            handle::init(args)
         },
+        "destroy" => {
+            handle::destroy(args)
+        }
         "create" => {
-            println!("create");
+            "create".to_string()
         }
         "status" => {
-            println!("status");
+            "status".to_string()
         },
         "stats" => {
-            println!("stats");
+            "stats".to_string()
         },
-        _ => {
-            println!("Command does not match anything. lol!");
+        "help" => {
+            "help".to_string()
         }
-    }
+        _ => {
+            match command {
+                "-v" | "--version" => {
+                    format!("project-manager v{}", VERSION)
+                },
+                _ => {
+                    "'{}' is not a tart command. See 'tart help'.".to_string()
+                }
+            }
+        }
+    };
+
+    println!("{}\n", message); // \n for extra space
+
 }

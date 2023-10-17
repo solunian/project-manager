@@ -30,4 +30,5 @@ I'm kinda just learning rust with this because apparently it's a good language. 
 ## Dev Notes
 
 - use `cargo run -- <arg1> <arg2> ...` to use command line args without calling cargo's options
-
+- do not use periods in single sentence messages
+- the number of `match` statements I've used is outrageous
