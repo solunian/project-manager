@@ -30,8 +30,5 @@ fn init_dot_dir() -> String {
 }
 
 fn get_current_dir() -> String {
-  match env::current_dir() {
-      Ok(path) => path.into_os_string().into_string().unwrap(),
-      Err(e) => panic!("{}", e)
-  }
+  env::current_dir().unwrap().into_os_string().into_string().unwrap()
 }

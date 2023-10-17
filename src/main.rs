@@ -1,4 +1,5 @@
 use std::env;
+use colored::Colorize;
 
 mod handle;
 
@@ -12,11 +13,12 @@ fn main() {
 
     // DEV STUFF
     if DEV_MODE {
-        println!("\nCommand Line `exec_args` (each value surrounded by < >)");
+        println!("{}", "\n=======================================================".blue().bold());
+        println!(        "Command Line `exec_args` (each value surrounded by < >)");
         for i in exec_args.iter() {
-            print!("<{}> ", i);
+            print!("<{}> ", i.purple().bold());
         }
-        println!("\n\n============================\n");
+        println!("{}", "\n=======================================================".blue().bold());
     }
     // ===========================
 
@@ -24,7 +26,7 @@ fn main() {
     let args: &[String] = &exec_args[1..];
     
     if args.len() == 0 {
-        println!("tart - a project manager");
+        println!("\ntart - a project manager\n");
         return;
     }
     
@@ -61,6 +63,6 @@ fn main() {
         }
     };
 
-    println!("{}\n", message); // \n for extra space
+    println!("\n{}\n", message); // \n for extra space
 
 }
