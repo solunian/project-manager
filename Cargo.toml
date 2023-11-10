@@ -7,3 +7,5 @@ edition = "2021"
 
 [dependencies]
 colored = "2.0.4"
+serde = "1.0.192"
+serde_yaml = "0.9.27"
