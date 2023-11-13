@@ -1,4 +1,4 @@
-use std::{fs, env};
+use std::{fs, env, path::PathBuf};
 
 const VERSION: &str = "0.0.1";
 const DOT_DIR: &str = "./.tart";
@@ -6,16 +6,22 @@ const DOT_DIR: &str = "./.tart";
 pub type Message = String;
 
 
+// HELP IS NOT WRITTEN!!!
+
+// tart [-v | --version] [-h | --help]
 pub fn tart(args: &[String]) -> Message {
   let grouped_args = group_args(args);
 
   for group in grouped_args {
      // should match group[0] with options or main commands
-     // then loop through remaining values in group for certain
+     // then loop through remaining values in group for related commands|opts
     match group[0] {
       "-v" | "--version" => {
          return about_tart();
       },
+      "-h" | "--help" => {
+        return help(args);
+      }
       _ => {
         return unknown();
       }
@@ -25,11 +31,28 @@ pub fn tart(args: &[String]) -> Message {
   help(args) // base function of command without args/opts
 }
 
+// tart init [directory]  [-h | --help]
 pub fn init(args: &[String]) -> Message {
-  match args.len() {
-    1 => init_dot_dir(),
-    _ => unknown()
+  let grouped_args = group_args(&args[1..]);
+
+  if grouped_args.len() == 0 {
+    return init_dot_dir(None);
   }
+  
+  for group in grouped_args {
+     // should match group[0] with options or main commands
+     // then loop through remaining values in group for related commands|opts
+    match group[0] {
+      "-h" | "--help" => {
+        return help(args);
+      },
+      _ => {
+        return init_dot_dir(Some(group[0]));
+      }
+    }
+  }
+  
+  help(args) // base function of command without args/opts
 }
 
 pub fn destroy(args: &[String]) -> Message {
@@ -56,16 +79,22 @@ pub fn create(args: &[String]) -> Message {
 pub fn help(_args: &[String]) -> Message {
 "tart: a simple command-line project manager
   
-work in progress!".to_string()
+You called for help... but help is a work in progress.".to_string()
 }
 
 fn about_tart() -> Message {
   format!("tart v{}", VERSION)
 }
 
-fn init_dot_dir() -> Message {
-  match fs::create_dir(DOT_DIR) {
-    Ok(()) => format!("Initialized tart in {}/.tart", get_current_dir()),
+// TODO: check if dir already exists
+fn init_dot_dir(dir: Option<&str>) -> Message {
+  let mut actual_path = PathBuf::from(DOT_DIR);
+  if let Some(given_dir) = dir {
+    actual_path = PathBuf::from(given_dir).join(".tart");
+  }
+
+  match fs::create_dir(&actual_path) {
+    Ok(()) => format!("Initialized tart in {}", fs::canonicalize(&actual_path).unwrap().to_str().unwrap()),
     Err(_) => "Failed to create directory".to_string()
   }
 }

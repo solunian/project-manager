@@ -4,6 +4,7 @@ use colored::Colorize;
 use crate::handle::Message;
 
 mod handle;
+mod tests;
 
 const DEV_MODE: bool = true;
 
@@ -24,6 +25,7 @@ fn main() {
   // ===========================
 
 
+  // args: <command | tart-opt> <opt1> <opt2> ...
   let args: &[String] = &exec_args[1..];
   let mut message: Message = handle::help(args);
   
