@@ -5,7 +5,7 @@ use clap::{Parser, Subcommand};
 mod handle;
 
 #[derive(Parser)]
-#[command(author, version, long_about=None, arg_required_else_help=true)]
+#[command(version, author, about, long_about=None, arg_required_else_help=true)]
 struct CLI {
   #[command(subcommand)]
   command: Option<Commands>,
@@ -18,13 +18,15 @@ struct CLI {
 #[derive(Subcommand)]
 enum Commands {
   #[command()]
-  /// Initialize tart
+  /// Initialize a tart repository
   Init {
+    /// Directory to initialize `.tart`
     directory: Option<PathBuf>,
   },
   #[command()]
-  /// Destroy tart
+  /// Destroy a tart repository
   Destroy {
+    /// Directory to destroy `.tart`
     directory: Option<PathBuf>,
   }
 }
