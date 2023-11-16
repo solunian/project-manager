@@ -1,63 +1,47 @@
-use std::env;
-use colored::Colorize;
+use std::path::PathBuf;
 
-use crate::handle::Message;
+use clap::{Parser, Subcommand};
 
 mod handle;
-mod tests;
 
-const DEV_MODE: bool = true;
+#[derive(Parser)]
+#[command(author, version, about, long_about=None, arg_required_else_help=true)]
+struct CLI {
+  #[command(subcommand)]
+  command: Option<Commands>,
+
+  // /// Sets a custom config file
+  // #[arg(short, long, value_name = "FILE")]
+  // config: Option<PathBuf>,
+}
+
+#[derive(Subcommand)]
+enum Commands {
+  #[command()]
+  /// Initialize tart
+  Init {
+    /// Path of tart initialization.
+    directory: Option<PathBuf>,
+  },
+  #[command()]
+  /// Destroy tart
+  Destroy {
+    directory: Option<PathBuf>,
+  }
+}
 
 fn main() {
-  // Vec includes executable as first, then args
-  let exec_args: Vec<String> = env::args().collect();
+  let cli = CLI::parse();
 
-
-  // DEV STUFF
-  if DEV_MODE {
-    println!("{}", "\n=======================================================".blue().bold());
-    println!(        "Command Line `exec_args` (each value surrounded by < >)");
-    for i in exec_args.iter() {
-      print!("<{}> ", i.purple().bold());
-    }
-    println!("{}", "\n=======================================================".blue().bold());
+  // You can check for the existence of subcommands, and if found use their
+  // matches just as you would the top level cmd
+  match &cli.command {
+    Some(Commands::Init { directory }) => {
+      println!("{}", handle::init(directory.as_ref()));
+    },
+    Some(Commands::Destroy { directory }) => {
+      println!("{}", handle::destroy(directory.as_ref()));
+    },
+    None => {}
   }
-  // ===========================
-
-
-  // args: <command | tart-opt> <opt1> <opt2> ...
-  let args: &[String] = &exec_args[1..];
-  let mut message: Message = handle::help(args);
-  
-  if args.len() > 0 {
-    let command: &str = &args[0];
-
-    message = match command {
-      "init" => {
-        handle::init(args)
-      },
-      "destroy" => {
-        handle::destroy(args)
-      }
-      "create" => {
-        handle::create(args)
-      }
-      "status" => {
-        "status not implemented yet".to_string()
-      },
-      "stats" => {
-        "stats not implemented yet".to_string()
-      },
-      "help" => {
-        handle::help(args)
-      }
-      _ => {
-        handle::tart(args)
-      }
-    };
-
-  }
-  
-  println!("\n{}\n", message); // \n for extra space
-
 }
