@@ -21,12 +21,12 @@ fn init_dot_dir(dir: Option<&PathBuf>) -> Message {
   actual_path.push(DOT_DIR);
 
   if actual_path.exists() {
-    return format!("Path `{}` already exists", &actual_path.to_str().unwrap());
+    return format!("Tart repository already exists at `{}`", &actual_path.to_str().unwrap());
   }
 
   match fs::create_dir(&actual_path) { // attempts to init dir
-    Ok(()) => format!("Initialized tart in {}", get_absolute_path(&actual_path).unwrap()), // path should exist after create_dir
-    Err(_) => format!("Failed to initialize tart in {}", &actual_path.to_str().unwrap()) // path does not exist
+    Ok(()) => format!("Initialized tart at `{}`", get_absolute_path(&actual_path).unwrap()), // path should exist after create_dir
+    Err(_) => format!("Failed to initialize tart at `{}`", &actual_path.to_str().unwrap()) // path does not exist
   }
 }
 
@@ -40,8 +40,8 @@ fn destroy_dot_dir(dir: Option<&PathBuf>) -> Message {
   match get_absolute_path(&actual_path) {
     Ok(path) => { // path exists 
       match fs::remove_dir_all(&path) { // attempts to remove dir
-        Ok(()) => format!("Destroyed tart in {}", &path),
-        Err(_) => format!("Failed to destroy tart in {}", &path)
+        Ok(()) => format!("Destroyed tart at `{}`", &path),
+        Err(_) => format!("Failed to destroy tart at `{}`", &path)
       }
     },
     Err(err_message) => err_message // path does not exist
