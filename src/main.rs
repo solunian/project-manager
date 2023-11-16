@@ -5,7 +5,7 @@ use clap::{Parser, Subcommand};
 mod handle;
 
 #[derive(Parser)]
-#[command(version, author, about, long_about=None, arg_required_else_help=true)]
+#[command(version, author, about, long_about=None, arg_required_else_help(true))]
 struct CLI {
   #[command(subcommand)]
   command: Option<Commands>,
