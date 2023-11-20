@@ -1,4 +1,10 @@
-use std::{fs, env, path::PathBuf};
+use std::{fs, env};
+use std::path::PathBuf;
+use std::io::prelude::*;
+use std::collections::BTreeMap;
+
+use serde_yaml;
+
 
 const DOT_DIR: &str = ".tart";
 
@@ -25,7 +31,21 @@ fn init_dot_dir(dir: Option<&PathBuf>) -> Message {
   }
 
   match fs::create_dir(&actual_path) { // attempts to init dir
-    Ok(()) => format!("Initialized tart at `{}`", get_absolute_path(&actual_path).unwrap()), // path should exist after create_dir
+    Ok(()) => {
+
+      // init `.tart` contents
+      let mut file = fs::File::create(&actual_path.join("project.yaml")).unwrap();
+
+      let mut map = BTreeMap::new();
+      map.insert("name".to_string(), 1.0);
+      map.insert("y".to_string(), 2.0);
+
+      let yaml = serde_yaml::to_string(&map).unwrap();
+      file.write_all(yaml.as_bytes()).unwrap();
+      // ======================================
+
+      format!("Initialized tart at `{}`", get_absolute_path(&actual_path).unwrap()) // path should exist after create_dir
+    },
     Err(_) => format!("Failed to initialize tart at `{}`", &actual_path.to_str().unwrap()) // path does not exist
   }
 }
