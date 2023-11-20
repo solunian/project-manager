@@ -9,10 +9,6 @@ mod handle;
 struct CLI {
   #[command(subcommand)]
   command: Option<Commands>,
-
-  // /// Sets a custom config file
-  // #[arg(short, long, value_name = "FILE")]
-  // config: Option<PathBuf>,
 }
 
 #[derive(Subcommand)]

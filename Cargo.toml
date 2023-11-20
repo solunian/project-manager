@@ -3,7 +3,7 @@ name = "tart"
 version = "0.0.1"
 edition = "2021"
 authors = ["Daniel Cui <solunian@gmail.com>"]
-description = "tart: a simple command-line project manager"
+description = "tart: a command-line project manager"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
