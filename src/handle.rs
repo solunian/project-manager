@@ -12,14 +12,6 @@ pub type Message = String;
 
 
 pub fn init(dir: Option<&PathBuf>) -> Message {
-  init_dot_dir(dir)
-}
-
-pub fn destroy(dir: Option<&PathBuf>) -> Message {
-  destroy_dot_dir(dir)
-}
-
-fn init_dot_dir(dir: Option<&PathBuf>) -> Message {
   let mut actual_path = env::current_dir().unwrap();
   if let Some(given_dir) = dir {
     actual_path = given_dir.to_path_buf();
@@ -50,7 +42,7 @@ fn init_dot_dir(dir: Option<&PathBuf>) -> Message {
   }
 }
 
-fn destroy_dot_dir(dir: Option<&PathBuf>) -> Message {
+pub fn destroy(dir: Option<&PathBuf>) -> Message {
   let mut actual_path = env::current_dir().unwrap();
   if let Some(given_dir) = dir {
     actual_path = given_dir.to_path_buf();
@@ -65,6 +57,17 @@ fn destroy_dot_dir(dir: Option<&PathBuf>) -> Message {
       }
     },
     Err(err_message) => err_message // path does not exist
+  }
+}
+
+pub fn board(name: Option<&String>) -> Message {
+  match name {
+    Some(val) => {
+      format!("some {}", val)
+    }
+    None => {
+      format!("none")
+    }
   }
 }
 

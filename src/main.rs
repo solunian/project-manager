@@ -24,7 +24,11 @@ enum Commands {
   Destroy {
     /// Directory to destroy `.tart`
     directory: Option<PathBuf>,
-  }
+  },
+  #[command()]
+  Board {
+    name: Option<String>,
+  },
 }
 
 fn main() {
@@ -38,6 +42,9 @@ fn main() {
     },
     Some(Commands::Destroy { directory }) => {
       println!("{}", handle::destroy(directory.as_ref()));
+    },
+    Some(Commands::Board { name }) => {
+      println!("{}", handle::board(name.as_ref()));
     },
     None => {}
   };
