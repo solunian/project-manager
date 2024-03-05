@@ -7,45 +7,43 @@ mod handle;
 #[derive(Parser)]
 #[command(version, author, about, long_about=None, arg_required_else_help(true))]
 struct CLI {
-  #[command(subcommand)]
-  command: Option<Commands>,
+    #[command(subcommand)]
+    command: Option<Commands>,
 }
 
 #[derive(Subcommand)]
 enum Commands {
-  #[command()]
-  /// Initialize a tart repository
-  Init {
-    /// Directory to initialize `.tart`
-    directory: Option<PathBuf>,
-  },
-  #[command()]
-  /// Destroy a tart repository
-  Destroy {
-    /// Directory to destroy `.tart`
-    directory: Option<PathBuf>,
-  },
-  #[command()]
-  Board {
-    name: Option<String>,
-  },
+    #[command()]
+    /// Initialize a tart repository
+    Init {
+        /// Directory to initialize `.tart`
+        directory: Option<PathBuf>,
+    },
+    #[command()]
+    /// Destroy a tart repository
+    Destroy {
+        /// Directory to destroy `.tart`
+        directory: Option<PathBuf>,
+    },
+    #[command()]
+    Board { name: Option<String> },
 }
 
 fn main() {
-  let cli = CLI::parse();
+    let cli = CLI::parse();
 
-  // You can check for the existence of subcommands, and if found use their
-  // matches just as you would the top level cmd
-  match &cli.command {
-    Some(Commands::Init { directory }) => {
-      println!("{}", handle::init(directory.as_ref()));
-    },
-    Some(Commands::Destroy { directory }) => {
-      println!("{}", handle::destroy(directory.as_ref()));
-    },
-    Some(Commands::Board { name }) => {
-      println!("{}", handle::board(name.as_ref()));
-    },
-    None => {}
-  };
+    // You can check for the existence of subcommands, and if found use their
+    // matches just as you would the top level cmd
+    match &cli.command {
+        Some(Commands::Init { directory }) => {
+            println!("{}", handle::init(directory.as_ref()));
+        }
+        Some(Commands::Destroy { directory }) => {
+            println!("{}", handle::destroy(directory.as_ref()));
+        }
+        Some(Commands::Board { name }) => {
+            println!("{}", handle::board(name.as_ref()));
+        }
+        None => {}
+    };
 }
