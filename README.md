@@ -10,7 +10,6 @@ I'm kinda just learning rust with this because apparently it's a good language. 
 - use a dot folder for tracking stuff, maybe global?
 - show statistics and progression for things - cool terminal colors!
 - "hat trick" for doing finishing three things in a row
-- inspiration from Jiaming from his PioneerHacks III project lol
 
 ### Features
 
